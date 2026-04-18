@@ -7,6 +7,7 @@ import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
+import Reveal from "@/components/Reveal";
 import { artistTiers, streamsContext } from "@/data/spotify";
 
 function formatNumber(n: number): string {
@@ -61,6 +62,7 @@ export default function Chapter5() {
         meta="<strong>Source:</strong> Spotify Loud &amp; Clear 2024 · <span class='dot'>·</span> Artist payout data · @$0.004/stream avg"
       />
 
+      <Reveal direction="up" delay={60}>
       <div className="stats-row">
         <StatCard
           value={`${formatNumber(totalArtists)}`}
@@ -93,6 +95,7 @@ export default function Chapter5() {
           color="#FF9800"
         />
       </div>
+      </Reveal>
 
       <ChartCard
         eye="CHART 5A · LOUD & CLEAR 2024"
@@ -185,6 +188,7 @@ export default function Chapter5() {
         warn
       />
 
+      <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
           <div className="ic">🏆</div>
@@ -207,6 +211,7 @@ export default function Chapter5() {
           <div className="dsc">Instead of a big pool, your $9.99 would go directly to artists you listen to. Deezer and Soundcloud tried this. Spotify hasn't adopted it — yet.</div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

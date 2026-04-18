@@ -1,3 +1,5 @@
+import Reveal from "@/components/Reveal";
+
 interface Props {
   icon: string;
   head: string;
@@ -7,12 +9,14 @@ interface Props {
 
 export default function InsightBox({ icon, head, body, warn = false }: Props) {
   return (
-    <div className={warn ? "warn" : "insight"}>
-      <div className="ins-icon">{icon}</div>
-      <div>
-        <div className="ins-head">{head}</div>
-        <div className="ins-body">{body}</div>
+    <Reveal direction="left" delay={40}>
+      <div className={warn ? "warn" : "insight"}>
+        <div className="ins-icon">{icon}</div>
+        <div>
+          <div className="ins-head">{head}</div>
+          <div className="ins-body">{body}</div>
+        </div>
       </div>
-    </div>
+    </Reveal>
   );
 }

@@ -3,6 +3,7 @@ import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
+import Reveal from "@/components/Reveal";
 import { dollarSplit, recordingSplit } from "@/data/spotify";
 
 function DollarBar() {
@@ -155,6 +156,7 @@ export default function Chapter3() {
         meta="<strong>Source:</strong> MIDiA Research · Spotify Loud & Clear 2024 · <span class='dot'>·</span> Based on standard streaming royalty structures"
       />
 
+      <Reveal direction="up" delay={60}>
       <div className="stats-row">
         <StatCard value="30¢" label="Spotify keeps" sub="Platform fee" color="#1DB954" />
         <StatCard value="56¢" label="Recording royalties" sub="Labels + artists" color="#9C27B0" />
@@ -162,6 +164,7 @@ export default function Chapter3() {
         <StatCard value="<2¢" label="Average artist gets" sub="After label cuts" color="#FF5252" />
         <StatCard value="6¢" label="Self-released artist" sub="Best case scenario" color="#64B5F6" />
       </div>
+      </Reveal>
 
       <DollarBar />
 
@@ -181,6 +184,7 @@ export default function Chapter3() {
         warn
       />
 
+      <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
           <div className="ic">🏢</div>
@@ -203,6 +207,7 @@ export default function Chapter3() {
           <div className="dsc">Spotify uses a "big pool" model: your $9.99 goes to the platform-wide royalty pool, not specifically to the artists you listen to.</div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

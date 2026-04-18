@@ -7,6 +7,7 @@ import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
+import Reveal from "@/components/Reveal";
 import { riaaFrom1980, riaaFrom2005 } from "@/data/riaa";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -53,6 +54,7 @@ export default function Chapter1() {
         meta="<strong>Source:</strong> RIAA U.S. Sales Database · <span class='dot'>·</span> <strong>Period:</strong> 1980–2024"
       />
 
+      <Reveal direction="up" delay={60}>
       <div className="stats-row">
         <StatCard
           value={`$${latest.total.toFixed(1)}B`}
@@ -85,6 +87,7 @@ export default function Chapter1() {
           color="#1DB954"
         />
       </div>
+      </Reveal>
 
       <ChartCard
         eye="CHART 1A · RIAA DATA"
@@ -160,6 +163,7 @@ export default function Chapter1() {
         </ResponsiveContainer>
       </ChartCard>
 
+      <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
           <div className="ic">📀</div>
@@ -182,6 +186,7 @@ export default function Chapter1() {
           <div className="dsc">But this money flows very differently than the old model — most goes to intermediaries before reaching artists.</div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

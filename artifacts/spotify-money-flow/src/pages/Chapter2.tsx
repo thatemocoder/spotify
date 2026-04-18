@@ -7,6 +7,7 @@ import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
+import Reveal from "@/components/Reveal";
 import { spotifyData } from "@/data/spotify";
 
 const RevTooltip = ({ active, payload, label }: any) => {
@@ -56,6 +57,7 @@ export default function Chapter2() {
         meta="<strong>Source:</strong> Spotify Investor Relations Q4 2024 · <span class='dot'>·</span> <strong>Period:</strong> 2018–2024"
       />
 
+      <Reveal direction="up" delay={60}>
       <div className="stats-row">
         <StatCard
           value={`${latest.premiumSubsM}M`}
@@ -88,6 +90,7 @@ export default function Chapter2() {
           color="#FF5252"
         />
       </div>
+      </Reveal>
 
       <ChartCard
         eye="CHART 2A · SPOTIFY INVESTOR RELATIONS"
@@ -141,6 +144,7 @@ export default function Chapter2() {
         </ResponsiveContainer>
       </ChartCard>
 
+      <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
           <div className="ic">💰</div>
@@ -163,6 +167,7 @@ export default function Chapter2() {
           <div className="dsc">Despite growing from $490M to $1.99B since 2018, advertising remains a fraction of total revenue — the premium model is the engine.</div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

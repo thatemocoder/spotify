@@ -7,6 +7,7 @@ import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
+import Reveal from "@/components/Reveal";
 import { spotifyData } from "@/data/spotify";
 
 const DualTooltip = ({ active, payload, label }: any) => {
@@ -59,6 +60,7 @@ export default function Chapter4() {
         meta="<strong>Source:</strong> Spotify Investor Relations 2024 · <span class='dot'>·</span> Annual figures"
       />
 
+      <Reveal direction="up" delay={60}>
       <div className="stats-row">
         <StatCard
           value={`${latest.freeMauM}M`}
@@ -91,6 +93,7 @@ export default function Chapter4() {
           color="#64B5F6"
         />
       </div>
+      </Reveal>
 
       <ChartCard
         eye="CHART 4A · USER VS REVENUE SPLIT"
@@ -204,6 +207,7 @@ export default function Chapter4() {
         attr="SPOTIFY INVESTOR RELATIONS · 2024 ANNUAL DATA"
       />
 
+      <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
           <div className="ic">🎯</div>
@@ -226,6 +230,7 @@ export default function Chapter4() {
           <div className="dsc">Playlists, Discover Weekly, and Wrapped create enough switching cost that Spotify can afford to let users stay free for years while betting on eventual conversion.</div>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }
