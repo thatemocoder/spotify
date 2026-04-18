@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import SpotifyShell from "@/components/SpotifyShell";
 import Chapter1 from "@/pages/Chapter1";
 import Chapter2 from "@/pages/Chapter2";
@@ -6,6 +7,17 @@ import Chapter4 from "@/pages/Chapter4";
 import Chapter5 from "@/pages/Chapter5";
 
 function App() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const raf = requestAnimationFrame(() => {
+      el.classList.add("hero-ready");
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     const scroller = document.querySelector(".story-scroll");
@@ -17,7 +29,7 @@ function App() {
   return (
     <SpotifyShell>
       {/* ── HERO ── */}
-      <section className="story-hero">
+      <section className="story-hero" ref={heroRef}>
         <div className="hero-inner">
           <div className="hero-eyebrow">INTERACTIVE DATA STORY · 2024</div>
           <h1 className="hero-title">Spotify<br /><em>Money Flow</em></h1>
@@ -51,7 +63,7 @@ function App() {
       <section id="chapter-5"><Chapter5 /></section>
 
       {/* ── FOOTER ── */}
-      <footer className="story-footer">
+      <footer className="story-footer" style={{ opacity: 1 }}>
         <div className="footer-logo">♪ Money Flow</div>
         <p className="footer-text">
           Data sourced from RIAA U.S. Sales Database, Spotify Technology S.A. Investor Relations,

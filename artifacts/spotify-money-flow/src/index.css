@@ -673,18 +673,20 @@ html, body {
   transform: none !important;
 }
 
-/* Hero stagger animation (CSS-only, no JS needed) */
+/* Hero stagger animation — gated by .hero-ready (applied by JS after mount).
+   Elements are fully visible without this class (safe for static snapshots).
+   Short durations ensure they complete rapidly after mount. */
 @keyframes heroFadeUp {
-  0%   { opacity: 0; transform: translateY(32px); }
+  0%   { opacity: 0; transform: translateY(28px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-.hero-eyebrow  { animation: heroFadeUp 0.8s 0.1s both; }
-.hero-title    { animation: heroFadeUp 0.9s 0.25s both; }
-.hero-sub-title{ animation: heroFadeUp 0.9s 0.4s both; }
-.hero-body     { animation: heroFadeUp 0.8s 0.55s both; }
-.hero-meta     { animation: heroFadeUp 0.7s 0.65s both; }
-.hero-cta      { animation: heroFadeUp 0.7s 0.75s both; }
-.hero-scroll-hint { animation: heroFadeUp 0.7s 1.0s both; }
+.hero-ready .hero-eyebrow   { animation: heroFadeUp 0.45s 0s     both; }
+.hero-ready .hero-title     { animation: heroFadeUp 0.55s 0.08s  both; }
+.hero-ready .hero-sub-title { animation: heroFadeUp 0.55s 0.16s  both; }
+.hero-ready .hero-body      { animation: heroFadeUp 0.45s 0.24s  both; }
+.hero-ready .hero-meta      { animation: heroFadeUp 0.4s  0.3s   both; }
+.hero-ready .hero-cta       { animation: heroFadeUp 0.4s  0.36s  both; }
+.hero-ready .hero-scroll-hint { animation: heroFadeUp 0.4s 0.44s both; }
 
 /* Count-up number pulse when it first renders */
 .count-up-pulse {

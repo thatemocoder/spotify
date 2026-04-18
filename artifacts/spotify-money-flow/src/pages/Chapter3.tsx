@@ -166,11 +166,17 @@ export default function Chapter3() {
       </div>
       </Reveal>
 
-      <DollarBar />
+      <Reveal direction="up" delay={0}>
+        <DollarBar />
+      </Reveal>
 
-      <FlowDiagram />
+      <Reveal direction="up" delay={0}>
+        <FlowDiagram />
+      </Reveal>
 
-      <RecordingSankey />
+      <Reveal direction="up" delay={0}>
+        <RecordingSankey />
+      </Reveal>
 
       <PullQuote
         text="Out of every dollar you spend on Spotify, less than 2¢ reaches the artist who actually made the music."
