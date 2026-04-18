@@ -5,52 +5,61 @@ import Chapter3 from "@/pages/Chapter3";
 import Chapter4 from "@/pages/Chapter4";
 import Chapter5 from "@/pages/Chapter5";
 
-function ChapterSection({ id, children }: { id: string; children: React.ReactNode }) {
-  return (
-    <section id={id} className="chapter-section">
-      {children}
-    </section>
-  );
-}
-
 function App() {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    const scroller = document.querySelector(".story-scroll");
+    if (el && scroller) {
+      (scroller as HTMLElement).scrollTo({ top: el.offsetTop - 60, behavior: "smooth" });
+    }
+  };
+
   return (
     <SpotifyShell>
-      <ChapterSection id="chapter-1">
-        <Chapter1 />
-      </ChapterSection>
+      {/* ── HERO ── */}
+      <section className="story-hero">
+        <div className="hero-inner">
+          <div className="hero-eyebrow">INTERACTIVE DATA STORY · 2024</div>
+          <h1 className="hero-title">Spotify<br /><em>Money Flow</em></h1>
+          <div className="hero-sub-title">Who really gets paid?</div>
+          <p className="hero-body">
+            From your $9.99 monthly subscription to the artist's bank account — 
+            a data-driven investigation into the economics of streaming music, 
+            using RIAA, Spotify IR, and MIDiA Research data.
+          </p>
+          <div className="hero-meta">
+            5 CHAPTERS · RIAA · SPOTIFY IR · MIDIA RESEARCH · LOUD & CLEAR 2024
+          </div>
+          <button className="hero-cta" onClick={() => scrollTo("chapter-1")}>
+            Scroll down
+          </button>
+        </div>
+        <div className="hero-scroll-hint">
+          <div className="scroll-arrow" />
+        </div>
+      </section>
 
-      <div className="chapter-divider">
-        <span className="chapter-divider-label">CHAPTER 2</span>
-      </div>
+      {/* ── CHAPTERS ── */}
+      <section id="chapter-1"><Chapter1 /></section>
+      <div className="chapter-divider" />
+      <section id="chapter-2"><Chapter2 /></section>
+      <div className="chapter-divider" />
+      <section id="chapter-3"><Chapter3 /></section>
+      <div className="chapter-divider" />
+      <section id="chapter-4"><Chapter4 /></section>
+      <div className="chapter-divider" />
+      <section id="chapter-5"><Chapter5 /></section>
 
-      <ChapterSection id="chapter-2">
-        <Chapter2 />
-      </ChapterSection>
-
-      <div className="chapter-divider">
-        <span className="chapter-divider-label">CHAPTER 3</span>
-      </div>
-
-      <ChapterSection id="chapter-3">
-        <Chapter3 />
-      </ChapterSection>
-
-      <div className="chapter-divider">
-        <span className="chapter-divider-label">CHAPTER 4</span>
-      </div>
-
-      <ChapterSection id="chapter-4">
-        <Chapter4 />
-      </ChapterSection>
-
-      <div className="chapter-divider">
-        <span className="chapter-divider-label">CHAPTER 5</span>
-      </div>
-
-      <ChapterSection id="chapter-5">
-        <Chapter5 />
-      </ChapterSection>
+      {/* ── FOOTER ── */}
+      <footer className="story-footer">
+        <div className="footer-logo">♪ Money Flow</div>
+        <p className="footer-text">
+          Data sourced from RIAA U.S. Sales Database, Spotify Technology S.A. Investor Relations,
+          MIDiA Research, and Spotify Loud &amp; Clear 2024. All figures approximate and for
+          illustrative/educational purposes.
+        </p>
+        <p className="footer-copy">SPOTIFY MONEY FLOW · DATA STORY · 2024</p>
+      </footer>
     </SpotifyShell>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import InsightBox from "@/components/InsightBox";
+import PullQuote from "@/components/PullQuote";
 import { dollarSplit, recordingSplit } from "@/data/spotify";
 
 function DollarBar() {
@@ -167,6 +168,11 @@ export default function Chapter3() {
       <FlowDiagram />
 
       <RecordingSankey />
+
+      <PullQuote
+        text="Out of every dollar you spend on Spotify, less than 2¢ reaches the artist who actually made the music."
+        attr="MIDIA RESEARCH · LOUD & CLEAR 2024"
+      />
 
       <InsightBox
         icon="⚠️"

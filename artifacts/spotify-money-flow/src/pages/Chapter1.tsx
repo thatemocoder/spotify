@@ -6,6 +6,7 @@ import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
+import PullQuote from "@/components/PullQuote";
 import { riaaFrom1980, riaaFrom2005 } from "@/data/riaa";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -127,6 +128,11 @@ export default function Chapter1() {
         icon="💡"
         head="THE NAPSTER EFFECT"
         body="The music industry lost nearly $6B in revenue between 1999 and 2014 — a 37% collapse driven by digital piracy. The rise of streaming on Spotify (2008) and Apple Music (2015) reversed this, but the recovery took 15 years and fundamentally changed how money flows to artists."
+      />
+
+      <PullQuote
+        text="The industry recovered its revenue — but the economics of who gets paid look nothing like they did in 1999."
+        attr="RIAA DATA ANALYSIS · 2024"
       />
 
       <ChartCard

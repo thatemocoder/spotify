@@ -6,6 +6,7 @@ import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
+import PullQuote from "@/components/PullQuote";
 import { artistTiers, streamsContext } from "@/data/spotify";
 
 function formatNumber(n: number): string {
@@ -171,6 +172,11 @@ export default function Chapter5() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+
+      <PullQuote
+        text="97% of artists on Spotify earn less than $1,000 a year. The remaining 3% have a name you've heard of."
+        attr="SPOTIFY LOUD & CLEAR 2024"
+      />
 
       <InsightBox
         icon="⚠️"

@@ -6,6 +6,7 @@ import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
+import PullQuote from "@/components/PullQuote";
 import { spotifyData } from "@/data/spotify";
 
 const RevTooltip = ({ active, payload, label }: any) => {
@@ -113,6 +114,11 @@ export default function Chapter2() {
         head="THE FREE TIER PARADOX"
         body={`In 2024, free users represent ${latest.pctFreeUsers}% of all listeners but generate only ${latest.pctAdRev}% of revenue. Meanwhile, premium subscribers — just ${latest.pctPremiumUsers}% of users — drive ${latest.pctPremiumRev}% of all revenue. Every free listener who never converts costs Spotify in server bandwidth while contributing a fraction of a cent.`}
         warn
+      />
+
+      <PullQuote
+        text="A free user generates 12¢ a month. A premium subscriber generates $4.88. Both consume exactly the same music."
+        attr="SPOTIFY INVESTOR RELATIONS · Q4 2024"
       />
 
       <ChartCard

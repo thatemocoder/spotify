@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const navItems = [
-  { icon: "📈", label: "Industry Revenue", id: "chapter-1" },
-  { icon: "🎧", label: "Streaming Rise", id: "chapter-2" },
-  { icon: "💵", label: "Where $1 Goes", id: "chapter-3" },
-  { icon: "📊", label: "The Ad Problem", id: "chapter-4" },
-  { icon: "🎤", label: "Artist Reality", id: "chapter-5" },
+const chapters = [
+  { id: "chapter-1", label: "Industry Revenue" },
+  { id: "chapter-2", label: "Streaming Rise" },
+  { id: "chapter-3", label: "Where $1 Goes" },
+  { id: "chapter-4", label: "The Ad Problem" },
+  { id: "chapter-5", label: "Artist Reality" },
 ];
 
 interface Props {
@@ -13,29 +13,31 @@ interface Props {
 }
 
 export default function SpotifyShell({ children }: Props) {
-  const [activeSection, setActiveSection] = useState("chapter-1");
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const mainRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [activeChapter, setActiveChapter] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = mainRef.current;
+    const el = scrollRef.current;
     if (!el) return;
 
     const onScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = el;
+      setScrolled(scrollTop > 20);
       const pct = scrollHeight > clientHeight
         ? (scrollTop / (scrollHeight - clientHeight)) * 100
         : 0;
-      setScrollProgress(pct);
+      setProgress(pct);
 
-      // Find which chapter is most visible
-      for (let i = navItems.length - 1; i >= 0; i--) {
-        const section = document.getElementById(navItems[i].id);
-        if (section && section.getBoundingClientRect().top <= 120) {
-          setActiveSection(navItems[i].id);
-          break;
+      let current: string | null = null;
+      for (const ch of chapters) {
+        const sec = document.getElementById(ch.id);
+        if (sec && sec.getBoundingClientRect().top <= 100) {
+          current = ch.id;
         }
       }
+      setActiveChapter(current);
     };
 
     el.addEventListener("scroll", onScroll, { passive: true });
@@ -44,111 +46,61 @@ export default function SpotifyShell({ children }: Props) {
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    const main = mainRef.current;
-    if (el && main) {
-      main.scrollTo({ top: el.offsetTop - 16, behavior: "smooth" });
+    const scroller = scrollRef.current;
+    if (el && scroller) {
+      scroller.scrollTo({ top: el.offsetTop - 60, behavior: "smooth" });
     }
   };
 
+  const activeLabel = activeChapter
+    ? chapters.find((c) => c.id === activeChapter)?.label
+    : null;
+  const activeIdx = activeChapter
+    ? chapters.findIndex((c) => c.id === activeChapter)
+    : -1;
+
   return (
-    <div className="spo-page">
-      {/* Fixed sidebar */}
-      <aside className="spo-sidebar">
-        <div className="spo-logo">
-          <div className="mark">♪</div>
-          <div>
-            <div className="wm">Money Flow</div>
-            <div className="tg">SPOTIFY · DATA STORY</div>
+    <div className="story-scroll" ref={scrollRef}>
+      {/* Fixed top nav */}
+      <nav className={`story-topnav ${scrolled ? "scrolled" : ""}`}>
+        <div className="nav-inner">
+          <div className="nav-brand">
+            <div className="nav-mark">♪</div>
+            <div>
+              <div className="nav-title">Spotify Money Flow</div>
+              <div className="nav-subtitle">DATA STORY · 2024</div>
+            </div>
+          </div>
+          <div className={`nav-chapter-pill ${activeLabel ? "active" : ""}`}>
+            {activeLabel
+              ? `${String(activeIdx + 1).padStart(2, "0")} — ${activeLabel.toUpperCase()}`
+              : "INTERACTIVE DATA STORY"}
           </div>
         </div>
+        <div className="nav-progress-bar" style={{ width: `${progress}%` }} />
+      </nav>
 
-        <div className="nav-section">
-          <span className="nav-label">Chapters</span>
-          {navItems.map((item, idx) => (
-            <button
-              key={item.id}
-              className={`nav-item ${activeSection === item.id ? "active" : ""}`}
-              onClick={() => scrollTo(item.id)}
+      {/* Fixed left chapter progress */}
+      <aside className="story-left">
+        <div className="left-line" />
+        <div className="left-dots">
+          {chapters.map((ch, i) => (
+            <div
+              key={ch.id}
+              className={`left-dot-wrap ${activeChapter === ch.id ? "active" : ""}`}
+              onClick={() => scrollTo(ch.id)}
+              title={ch.label}
             >
-              <span className="ni">{item.icon}</span>
-              <span style={{ flex: 1 }}>{item.label}</span>
-              <span className="nav-num">{idx + 1}</span>
-            </button>
+              <div className="left-dot" />
+              <div className="left-dot-num">0{i + 1}</div>
+            </div>
           ))}
-        </div>
-
-        <div className="divider" />
-
-        <div className="nav-section">
-          <span className="nav-label">Sources</span>
-          <div className="src-chip">
-            <div className="sc-l">DATA SOURCE</div>
-            <div className="sc-n">RIAA U.S. Sales Database</div>
-          </div>
-          <div className="src-chip">
-            <div className="sc-l">DATA SOURCE</div>
-            <div className="sc-n">Spotify Investor Relations</div>
-          </div>
-          <div className="src-chip">
-            <div className="sc-l">DATA SOURCE</div>
-            <div className="sc-n">Loud & Clear 2024</div>
-          </div>
-          <div className="src-chip">
-            <div className="sc-l">DATA SOURCE</div>
-            <div className="sc-n">MIDiA Research</div>
-          </div>
-        </div>
-
-        <div className="sidebar-foot">
-          SPOTIFY MONEY FLOW<br />
-          DATA STORY · 2024
         </div>
       </aside>
 
-      {/* Scrollable main */}
-      <div className="spo-content" ref={mainRef}>
-        {/* Sticky top progress bar */}
-        <div className="scroll-topbar">
-          <div className="scroll-topbar-inner">
-            <span className="scroll-topbar-label">SPOTIFY MONEY FLOW</span>
-            <div className="scroll-progress-track">
-              <div
-                className="scroll-progress-fill"
-                style={{ width: `${scrollProgress}%` }}
-              />
-            </div>
-            <span className="scroll-topbar-pct">{Math.round(scrollProgress)}%</span>
-          </div>
-        </div>
-
-        {/* Hero banner */}
-        <div className="page-hero">
-          <div className="page-hero-eyebrow">INTERACTIVE DATA STORY</div>
-          <h1 className="page-hero-title">Spotify Money Flow</h1>
-          <p className="page-hero-sub">
-            Where does the money go? From your $9.99/month subscription to the artist's bank account — 
-            a data-driven investigation into the economics of streaming music.
-          </p>
-          <div className="page-hero-meta">
-            5 chapters · RIAA · Spotify IR · MIDiA Research · Loud & Clear 2024
-          </div>
-          <button className="page-hero-cta" onClick={() => scrollTo("chapter-1")}>
-            Start Reading ↓
-          </button>
-        </div>
-
-        {/* Chapter content */}
+      {/* Main content */}
+      <div className="story-body">
         {children}
-
-        {/* Footer */}
-        <footer className="page-footer">
-          <div className="footer-logo">♪ Money Flow</div>
-          <p className="footer-text">
-            Data sourced from RIAA U.S. Sales Database, Spotify Technology S.A. Investor Relations, 
-            MIDiA Research, and Spotify Loud &amp; Clear 2024. All figures approximate.
-          </p>
-          <p className="footer-copy">Spotify Money Flow · Data Story · 2024</p>
-        </footer>
       </div>
     </div>
   );

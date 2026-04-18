@@ -6,6 +6,7 @@ import ChapterHero from "@/components/ChapterHero";
 import StatCard from "@/components/StatCard";
 import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
+import PullQuote from "@/components/PullQuote";
 import { spotifyData } from "@/data/spotify";
 
 const DualTooltip = ({ active, payload, label }: any) => {
@@ -197,6 +198,11 @@ export default function Chapter4() {
           </div>
         </div>
       </ChartCard>
+
+      <PullQuote
+        text="58% of users generate just 12% of revenue. The free tier is the world's largest unpaid music subscription."
+        attr="SPOTIFY INVESTOR RELATIONS · 2024 ANNUAL DATA"
+      />
 
       <div className="cards-grid">
         <div className="info-card">
