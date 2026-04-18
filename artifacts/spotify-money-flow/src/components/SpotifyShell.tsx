@@ -1,42 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-interface NavItem {
-  icon: string;
-  label: string;
-  badge?: string;
-  id: number;
-}
-
-const navItems: NavItem[] = [
-  { icon: "📈", label: "Industry Revenue", id: 0 },
-  { icon: "🎧", label: "Streaming Rise", id: 1 },
-  { icon: "💵", label: "Where $1 Goes", id: 2 },
-  { icon: "📊", label: "The Ad Problem", id: 3 },
-  { icon: "🎤", label: "Artist Reality", id: 4 },
+const navItems = [
+  { icon: "📈", label: "Industry Revenue", id: "chapter-1" },
+  { icon: "🎧", label: "Streaming Rise", id: "chapter-2" },
+  { icon: "💵", label: "Where $1 Goes", id: "chapter-3" },
+  { icon: "📊", label: "The Ad Problem", id: "chapter-4" },
+  { icon: "🎤", label: "Artist Reality", id: "chapter-5" },
 ];
 
 interface Props {
-  currentChapter: number;
-  onChapterChange: (id: number) => void;
   children: React.ReactNode;
 }
 
-export default function SpotifyShell({ currentChapter, onChapterChange, children }: Props) {
-  const [progress] = useState(42);
-  
-  const chapters = [
-    { emoji: "📈", name: "Industry Revenue", sub: "RIAA Data 1980–2024" },
-    { emoji: "🎧", name: "Streaming Rise", sub: "The Format Shift" },
-    { emoji: "💵", name: "Where $1 Goes", sub: "Money Flow" },
-    { emoji: "📊", name: "The Ad Problem", sub: "Free vs Premium" },
-    { emoji: "🎤", name: "Artist Reality", sub: "Who Actually Gets Paid?" },
-  ];
+export default function SpotifyShell({ children }: Props) {
+  const [activeSection, setActiveSection] = useState("chapter-1");
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  const current = chapters[currentChapter];
+  useEffect(() => {
+    const el = mainRef.current;
+    if (!el) return;
+
+    const onScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = el;
+      const pct = scrollHeight > clientHeight
+        ? (scrollTop / (scrollHeight - clientHeight)) * 100
+        : 0;
+      setScrollProgress(pct);
+
+      // Find which chapter is most visible
+      for (let i = navItems.length - 1; i >= 0; i--) {
+        const section = document.getElementById(navItems[i].id);
+        if (section && section.getBoundingClientRect().top <= 120) {
+          setActiveSection(navItems[i].id);
+          break;
+        }
+      }
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    const main = mainRef.current;
+    if (el && main) {
+      main.scrollTo({ top: el.offsetTop - 16, behavior: "smooth" });
+    }
+  };
 
   return (
-    <div className="spo-shell">
-      {/* Sidebar */}
+    <div className="spo-page">
+      {/* Fixed sidebar */}
       <aside className="spo-sidebar">
         <div className="spo-logo">
           <div className="mark">♪</div>
@@ -48,15 +64,15 @@ export default function SpotifyShell({ currentChapter, onChapterChange, children
 
         <div className="nav-section">
           <span className="nav-label">Chapters</span>
-          {navItems.map((item) => (
+          {navItems.map((item, idx) => (
             <button
               key={item.id}
-              className={`nav-item ${currentChapter === item.id ? "active" : ""}`}
-              onClick={() => onChapterChange(item.id)}
+              className={`nav-item ${activeSection === item.id ? "active" : ""}`}
+              onClick={() => scrollTo(item.id)}
             >
               <span className="ni">{item.icon}</span>
               <span style={{ flex: 1 }}>{item.label}</span>
-              {item.badge && <span className="nb">{item.badge}</span>}
+              <span className="nav-num">{idx + 1}</span>
             </button>
           ))}
         </div>
@@ -89,65 +105,51 @@ export default function SpotifyShell({ currentChapter, onChapterChange, children
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="spo-main" style={{ background: "var(--surface)" }}>
-        {/* Topbar */}
-        <div className="topbar">
-          <div className="tb-arrows">
-            <button
-              className="tb-btn"
-              onClick={() => onChapterChange(Math.max(0, currentChapter - 1))}
-              disabled={currentChapter === 0}
-              style={{ opacity: currentChapter === 0 ? 0.4 : 1 }}
-            >
-              ‹
-            </button>
-            <button
-              className="tb-btn"
-              onClick={() => onChapterChange(Math.min(navItems.length - 1, currentChapter + 1))}
-              disabled={currentChapter === navItems.length - 1}
-              style={{ opacity: currentChapter === navItems.length - 1 ? 0.4 : 1 }}
-            >
-              ›
-            </button>
-          </div>
-          <div className="chapter-pill">
-            CHAPTER {currentChapter + 1} / {navItems.length}
-          </div>
-        </div>
-
-        {children}
-        <div className="spo-pad" />
-      </main>
-
-      {/* Now-playing bar */}
-      <footer className="spo-bar">
-        <div className="bar-left">
-          <div className="bar-art" style={{ fontSize: "24px" }}>{current.emoji}</div>
-          <div>
-            <div className="bar-tname">{current.name}</div>
-            <div className="bar-tsub">{current.sub}</div>
-          </div>
-        </div>
-        <div className="bar-center">
-          <div className="bar-ctrls">
-            <button className="bar-btn" onClick={() => onChapterChange(Math.max(0, currentChapter - 1))}>⏮</button>
-            <button className="bar-btn big" onClick={() => onChapterChange((currentChapter + 1) % navItems.length)}>▶</button>
-            <button className="bar-btn" onClick={() => onChapterChange(Math.min(navItems.length - 1, currentChapter + 1))}>⏭</button>
-          </div>
-          <div className="bar-prog">
-            <span className="bar-time">{String(Math.floor(currentChapter * 3.5)).padStart(1,"0")}:{String(Math.round((currentChapter * 3.5 % 1) * 60)).padStart(2,"0")}</span>
-            <div className="bar-track">
-              <div className="bar-fill" style={{ width: `${(currentChapter / (navItems.length - 1)) * 100}%` }} />
+      {/* Scrollable main */}
+      <div className="spo-content" ref={mainRef}>
+        {/* Sticky top progress bar */}
+        <div className="scroll-topbar">
+          <div className="scroll-topbar-inner">
+            <span className="scroll-topbar-label">SPOTIFY MONEY FLOW</span>
+            <div className="scroll-progress-track">
+              <div
+                className="scroll-progress-fill"
+                style={{ width: `${scrollProgress}%` }}
+              />
             </div>
-            <span className="bar-time">14:00</span>
+            <span className="scroll-topbar-pct">{Math.round(scrollProgress)}%</span>
           </div>
         </div>
-        <div className="bar-right">
-          <button className="bar-btn" style={{ fontSize: "13px" }}>🔊</button>
-          <div className="vol-bar"><div className="vol-fill" /></div>
+
+        {/* Hero banner */}
+        <div className="page-hero">
+          <div className="page-hero-eyebrow">INTERACTIVE DATA STORY</div>
+          <h1 className="page-hero-title">Spotify Money Flow</h1>
+          <p className="page-hero-sub">
+            Where does the money go? From your $9.99/month subscription to the artist's bank account — 
+            a data-driven investigation into the economics of streaming music.
+          </p>
+          <div className="page-hero-meta">
+            5 chapters · RIAA · Spotify IR · MIDiA Research · Loud & Clear 2024
+          </div>
+          <button className="page-hero-cta" onClick={() => scrollTo("chapter-1")}>
+            Start Reading ↓
+          </button>
         </div>
-      </footer>
+
+        {/* Chapter content */}
+        {children}
+
+        {/* Footer */}
+        <footer className="page-footer">
+          <div className="footer-logo">♪ Money Flow</div>
+          <p className="footer-text">
+            Data sourced from RIAA U.S. Sales Database, Spotify Technology S.A. Investor Relations, 
+            MIDiA Research, and Spotify Loud &amp; Clear 2024. All figures approximate.
+          </p>
+          <p className="footer-copy">Spotify Money Flow · Data Story · 2024</p>
+        </footer>
+      </div>
     </div>
   );
 }
