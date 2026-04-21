@@ -11,6 +11,28 @@ import Reveal from "@/components/Reveal";
 import Icon from "@/components/Icon";
 import { spotifyData } from "@/data/spotify";
 
+const PieTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const item = payload[0];
+    return (
+      <div style={{
+        background: "#1a1a1a", border: `1px solid ${item.payload.color}`,
+        borderRadius: 8, padding: "10px 14px", minWidth: 140,
+      }}>
+        <p style={{ color: item.payload.color, fontSize: 12, fontWeight: 700, marginBottom: 4, fontFamily: "monospace" }}>
+          {item.name}
+        </p>
+        <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 600 }}>
+          {typeof item.value === "number" && item.value > 100
+            ? `${item.value.toFixed(0)}M users`
+            : `$${item.value.toFixed(2)}B`}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const DualTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -193,12 +215,7 @@ export default function Chapter4() {
                   <Cell key={idx} fill={entry.color} stroke="#0f0f0f" strokeWidth={2} />
                 ))}
               </Pie>
-              <Tooltip
-                formatter={(v: any) => [`${v}M users`, ""]}
-                contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }}
-                itemStyle={{ color: "#fff" }}
-                labelStyle={{ color: "#aaa" }}
-              />
+              <Tooltip content={<PieTooltip />} />
             </PieChart>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }}>
               {userPieData.map((d) => (
@@ -226,12 +243,7 @@ export default function Chapter4() {
                   <Cell key={idx} fill={entry.color} stroke="#0f0f0f" strokeWidth={2} />
                 ))}
               </Pie>
-              <Tooltip
-                formatter={(v: any) => [`$${v.toFixed(2)}B`, ""]}
-                contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }}
-                itemStyle={{ color: "#fff" }}
-                labelStyle={{ color: "#aaa" }}
-              />
+              <Tooltip content={<PieTooltip />} />
             </PieChart>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }}>
               {revPieData.map((d) => (
