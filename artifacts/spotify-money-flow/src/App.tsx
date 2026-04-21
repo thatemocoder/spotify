@@ -74,7 +74,7 @@ function App() {
           All figures are approximate and presented for illustrative and educational purposes.
         </p>
         <p className="footer-text footer-acknowledge">
-          Produced as part of <strong>DATA5002 - Data Visualisation</strong> at the University of Sydney.
+          Produced as part of <strong>DATA5002 - Data Visualisation</strong> at the University of New South Wales.
           Thanks to our course instructors for their guidance throughout this project.
           Group members: <strong>Dhruv Soni</strong>, <strong>Sadaf Ahmed</strong>, <strong>Ujan Pal</strong>.
         </p>
