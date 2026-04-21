@@ -54,18 +54,18 @@ export const recordingSplit = [
 ];
 
 export const artistTiers = [
-  { label: "Earn $1M+/year", artists: 1070, minStreams: 250000000, color: "#FFD700", monthlyUsd: 83333 },
-  { label: "Earn $100K–$1M/year", artists: 13400, minStreams: 25000000, color: "#C0C0C0", monthlyUsd: 8333 },
-  { label: "Earn $10K–$100K/year", artists: 130000, minStreams: 2500000, color: "#CD7F32", monthlyUsd: 833 },
-  { label: "Earn $1K–$10K/year", artists: 870000, minStreams: 250000, color: "#607D8B", monthlyUsd: 83 },
-  { label: "Earn $1–$999/year", artists: 3500000, minStreams: 1, color: "#455A64", monthlyUsd: 42 },
-  { label: "Earn $0 (no streams)", artists: 7000000, minStreams: 0, color: "#2d2d2d", monthlyUsd: 0 },
+  { label: "Earn $1M+/year",       artists: 1070,    minStreams: 250000000, color: "#FFD700", monthlyUsd: 83333 },
+  { label: "Earn $100K-$1M/year",  artists: 13400,   minStreams: 25000000,  color: "#FF9800", monthlyUsd: 8333 },
+  { label: "Earn $10K-$100K/year", artists: 130000,  minStreams: 2500000,   color: "#FF5252", monthlyUsd: 833 },
+  { label: "Earn $1K-$10K/year",   artists: 870000,  minStreams: 250000,    color: "#B3B3B3", monthlyUsd: 83 },
+  { label: "Earn $1-$999/year",    artists: 3500000, minStreams: 1,         color: "#666666", monthlyUsd: 42 },
+  { label: "Earn $0 (no streams)", artists: 7000000, minStreams: 0,         color: "#535353", monthlyUsd: 0 },
 ];
 
 export const streamsContext = [
-  { benchmark: "US Min Wage (full-time)", monthlyCost: 1160, streamsNeeded: 290000, color: "#FF5252" },
-  { benchmark: "Avg 1-bed rent (US median)", monthlyCost: 1500, streamsNeeded: 375000, color: "#FF7043" },
-  { benchmark: "MIT Living Wage (single adult)", monthlyCost: 3800, streamsNeeded: 950000, color: "#FF1744" },
-  { benchmark: "Spotify Premium sub", monthlyCost: 9.99, streamsNeeded: 2498, color: "#1DB954" },
-  { benchmark: "Cup of coffee", monthlyCost: 5.00, streamsNeeded: 1250, color: "#64B5F6" },
+  { benchmark: "US Min Wage (full-time)",       monthlyCost: 1160, streamsNeeded: 290000, color: "#FF5252" },
+  { benchmark: "Avg 1-bed rent (US median)",    monthlyCost: 1500, streamsNeeded: 375000, color: "#FF7043" },
+  { benchmark: "MIT Living Wage (single adult)",monthlyCost: 3800, streamsNeeded: 950000, color: "#FF1744" },
+  { benchmark: "Spotify Premium sub",           monthlyCost: 9.99, streamsNeeded: 2498,   color: "#1DB954" },
+  { benchmark: "Cup of coffee",                 monthlyCost: 5.00, streamsNeeded: 1250,   color: "#64B5F6" },
 ];

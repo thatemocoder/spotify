@@ -68,7 +68,7 @@ export default function SpotifyShell({ children }: Props) {
             <div className="nav-mark">♪</div>
             <div>
               <div className="nav-title">Spotify Money Flow</div>
-              <div className="nav-subtitle">DATA STORY · 2024</div>
+              <div className="nav-subtitle">DATA STORY</div>
             </div>
           </div>
           <div className={`nav-chapter-pill ${activeLabel ? "active" : ""}`}>

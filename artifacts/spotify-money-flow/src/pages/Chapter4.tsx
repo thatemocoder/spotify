@@ -8,6 +8,7 @@ import ChartCard from "@/components/ChartCard";
 import InsightBox from "@/components/InsightBox";
 import PullQuote from "@/components/PullQuote";
 import Reveal from "@/components/Reveal";
+import Icon from "@/components/Icon";
 import { spotifyData } from "@/data/spotify";
 
 const DualTooltip = ({ active, payload, label }: any) => {
@@ -28,7 +29,7 @@ const DualTooltip = ({ active, payload, label }: any) => {
 
 const latest = spotifyData[spotifyData.length - 1];
 const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -53,11 +54,9 @@ export default function Chapter4() {
     <div>
       <ChapterHero
         chapterNum={4}
-        emoji="📊"
-        gradient="linear-gradient(135deg, #2a0000 0%, #FF5252 100%)"
         title="The Ad Problem"
-        sub={`${latest.pctFreeUsers}% of users generate only ${latest.pctAdRev}% of revenue. The math of giving away music to hundreds of millions of non-paying listeners is Spotify's biggest structural challenge.`}
-        meta="<strong>Source:</strong> Spotify Investor Relations 2024 · <span class='dot'>·</span> Annual figures"
+        sub={`${latest.pctFreeUsers}% of users generate only ${latest.pctAdRev}% of revenue. Giving away music to hundreds of millions of non-paying listeners is Spotify's biggest structural challenge.`}
+        meta='<strong>Source:</strong> <a href="https://investors.spotify.com/financials/annual-reports-and-proxies/default.aspx" target="_blank" style="color: #1DB954; text-decoration: none; border-bottom: 1px solid rgba(29,185,84,0.3)">Spotify Investor Relations 2024</a> &middot; Annual figures'
       />
 
       <Reveal direction="up" delay={60}>
@@ -81,7 +80,7 @@ export default function Chapter4() {
           color="#1DB954"
         />
         <StatCard
-          value={`${Math.round(latest.revPerPremium / latest.revPerFree)}×`}
+          value={`${Math.round(latest.revPerPremium / latest.revPerFree)}x`}
           label="Revenue gap"
           sub="Premium vs free user value"
           color="#FF5252"
@@ -97,11 +96,27 @@ export default function Chapter4() {
 
       <ChartCard
         eye="CHART 4A · USER VS REVENUE SPLIT"
-        title="The Ad Problem: Users vs Revenue Over Time (2018–2024)"
+        title="The Ad Problem: Users vs Revenue Over Time (2018-2024)"
         sub="Bars show user counts (left axis), lines show revenue share (right axis)"
       >
         <ResponsiveContainer width="100%" height={360}>
           <ComposedChart data={spotifyData} margin={{ top: 10, right: 60, left: 20, bottom: 0 }}>
+            <defs>
+              <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#1e1e1e" />
             <XAxis dataKey="year" stroke="#555" tick={{ fill: "#888", fontSize: 11 }} />
             <YAxis
@@ -122,24 +137,42 @@ export default function Chapter4() {
             />
             <Tooltip content={<DualTooltip />} />
             <Legend formatter={(value) => <span style={{ color: "#aaa" }}>{value}</span>} />
-            <Bar yAxisId="left" dataKey="freeMauM" name="Free MAU (M)" fill="rgba(255,152,0,0.5)" stackId="a" />
-            <Bar yAxisId="left" dataKey="premiumSubsM" name="Premium Subs (M)" fill="rgba(29,185,84,0.6)" stackId="a" />
-            <Line yAxisId="right" type="monotone" dataKey="pctAdRev" name="Ad Revenue %" stroke="#FF5252" strokeWidth={2.5} dot={{ fill: "#FF5252", r: 5 }} />
-            <Line yAxisId="right" type="monotone" dataKey="pctPremiumRev" name="Premium Revenue %" stroke="#1DB954" strokeWidth={2.5} strokeDasharray="6 3" dot={{ fill: "#1DB954", r: 5 }} />
+            <Bar yAxisId="left" dataKey="freeMauM" name="Free MAU (M)" fill="rgba(255,140,0,0.75)" stackId="a" />
+            <Bar yAxisId="left" dataKey="premiumSubsM" name="Premium Subs (M)" fill="rgba(0,255,100,0.6)" stackId="a" />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="pctAdRev"
+              name="Ad Revenue %"
+              stroke="#FF1744"
+              strokeWidth={3}
+              dot={{ fill: "#FF1744", r: 5, strokeWidth: 0 }}
+              filter="url(#glow-red)"
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="pctPremiumRev"
+              name="Premium Revenue %"
+              stroke="#00FF66"
+              strokeWidth={3}
+              strokeDasharray="6 3"
+              dot={{ fill: "#00FF66", r: 5, strokeWidth: 0 }}
+              filter="url(#glow-green)"
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
 
       <InsightBox
-        icon="⚠️"
         head="THE STRUCTURAL IMBALANCE"
-        body={`In 2024, Spotify had ${latest.freeMauM}M free users and ${latest.premiumSubsM}M premium subscribers. Free users outnumber premium by ${Math.round(latest.freeMauM / latest.premiumSubsM * 10) / 10}:1 — but generate only ${Math.round(latest.adRevenueB / latest.premiumRevenueB * 100)}% of the premium revenue. Each additional free user is a bandwidth cost with marginal ad revenue return.`}
+        body={`In 2024, Spotify had ${latest.freeMauM}M free users and ${latest.premiumSubsM}M premium subscribers. Free users outnumber premium by ${Math.round(latest.freeMauM / latest.premiumSubsM * 10) / 10}:1 - but generate only ${Math.round(latest.adRevenueB / latest.premiumRevenueB * 100)}% of the premium revenue. Each additional free user is a bandwidth cost with marginal ad revenue return.`}
         warn
       />
 
       <ChartCard
         eye="CHART 4B · 2024 SNAPSHOT"
-        title={`2024: ${latest.pctFreeUsers}% of Users → Only ${latest.pctAdRev}% of Revenue`}
+        title={`2024: ${latest.pctFreeUsers}% of Users - Only ${latest.pctAdRev}% of Revenue`}
         sub="Left: user split. Right: revenue split. Same colors, dramatically different proportions."
       >
         <div style={{ display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap" }}>
@@ -160,7 +193,12 @@ export default function Chapter4() {
                   <Cell key={idx} fill={entry.color} stroke="#0f0f0f" strokeWidth={2} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v: any) => [`${v}M users`, ""]} contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }} />
+              <Tooltip
+                formatter={(v: any) => [`${v}M users`, ""]}
+                contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }}
+                itemStyle={{ color: "#fff" }}
+                labelStyle={{ color: "#aaa" }}
+              />
             </PieChart>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }}>
               {userPieData.map((d) => (
@@ -188,7 +226,12 @@ export default function Chapter4() {
                   <Cell key={idx} fill={entry.color} stroke="#0f0f0f" strokeWidth={2} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v: any) => [`$${v.toFixed(2)}B`, ""]} contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }} />
+              <Tooltip
+                formatter={(v: any) => [`$${v.toFixed(2)}B`, ""]}
+                contentStyle={{ background: "#1a1a1a", border: "1px solid #333", borderRadius: 8 }}
+                itemStyle={{ color: "#fff" }}
+                labelStyle={{ color: "#aaa" }}
+              />
             </PieChart>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }}>
               {revPieData.map((d) => (
@@ -210,22 +253,22 @@ export default function Chapter4() {
       <Reveal direction="up" delay={40}>
       <div className="cards-grid">
         <div className="info-card">
-          <div className="ic">🎯</div>
+          <div className="ic"><Icon name="target" size={22} color="#1DB954" /></div>
           <div className="ttl">The Conversion Play</div>
-          <div className="dsc">Spotify's free tier is a funnel, not a product. The goal is to hook users on the experience until they subscribe — or graduate to a family plan.</div>
+          <div className="dsc">Spotify's free tier is a funnel, not a product. The goal is to hook users on the experience until they subscribe - or graduate to a family plan.</div>
         </div>
         <div className="info-card">
-          <div className="ic">🌐</div>
+          <div className="ic"><Icon name="globe" size={22} color="#FF9800" /></div>
           <div className="ttl">Ad Market Limitations</div>
           <div className="dsc">Digital audio ads command lower CPMs than display or video. Even with 350M free listeners, the ad inventory ceiling is much lower than subscription revenue.</div>
         </div>
         <div className="info-card">
-          <div className="ic">📉</div>
+          <div className="ic"><Icon name="trending-down" size={22} color="#FF5252" /></div>
           <div className="ttl">Artist Royalty Impact</div>
           <div className="dsc">Free streams pay lower royalties than premium streams. When ad revenue is 12% of the pool, artists who primarily attract free listeners earn less per stream.</div>
         </div>
         <div className="info-card">
-          <div className="ic">🔒</div>
+          <div className="ic"><Icon name="lock" size={22} color="#64B5F6" /></div>
           <div className="ttl">The Lock-in Effect</div>
           <div className="dsc">Playlists, Discover Weekly, and Wrapped create enough switching cost that Spotify can afford to let users stay free for years while betting on eventual conversion.</div>
         </div>
