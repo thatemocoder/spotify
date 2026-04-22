@@ -101,12 +101,6 @@ export default function Chapter2() {
           <BarChart
             data={spotifyData}
             margin={{ top: 10, right: 30, left: 20, bottom: 0 }}
-            onMouseMove={(state: any) => {
-              if (state?.isTooltipActive && state?.activePayload?.[0]) {
-                setActiveYear(state.activePayload[0].payload.year);
-              }
-            }}
-            onMouseLeave={() => setActiveYear(null)}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#1e1e1e" />
             <XAxis dataKey="year" stroke="#555" tick={{ fill: "#888", fontSize: 11 }} />
@@ -115,19 +109,23 @@ export default function Chapter2() {
             <Legend
               formatter={(value) => <span style={{ color: "#aaa" }}>{value}</span>}
             />
-            <Bar dataKey="revPerPremium" name="Premium ($/user/mo)" radius={[4, 4, 0, 0]}>
+            <Bar dataKey="revPerPremium" name="Premium ($/user/mo)" fill="#1DB954" radius={[4, 4, 0, 0]}>
               {spotifyData.map((d) => (
                 <Cell
                   key={d.year}
-                  fill={activeYear === null || activeYear === d.year ? "#1DB954" : "rgba(100,100,100,0.35)"}
+                  fill={activeYear === null || activeYear === d.year ? "#1DB954" : "rgba(120,120,120,0.3)"}
+                  onMouseEnter={() => setActiveYear(d.year)}
+                  onMouseLeave={() => setActiveYear(null)}
                 />
               ))}
             </Bar>
-            <Bar dataKey="revPerFree" name="Free Tier ($/user/mo)" radius={[4, 4, 0, 0]}>
+            <Bar dataKey="revPerFree" name="Free Tier ($/user/mo)" fill="#FF9800" radius={[4, 4, 0, 0]}>
               {spotifyData.map((d) => (
                 <Cell
                   key={d.year}
-                  fill={activeYear === null || activeYear === d.year ? "#FF9800" : "rgba(100,100,100,0.35)"}
+                  fill={activeYear === null || activeYear === d.year ? "#FF9800" : "rgba(120,120,120,0.3)"}
+                  onMouseEnter={() => setActiveYear(d.year)}
+                  onMouseLeave={() => setActiveYear(null)}
                 />
               ))}
             </Bar>
