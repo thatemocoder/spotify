@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "bV0I8gVkqS5Qg4eWIvVpS"
+uri = "file://spotify-money-flow.tar.gz"
+type = "unspecified"
+title = "Spotify Money Flow — Source Files"
